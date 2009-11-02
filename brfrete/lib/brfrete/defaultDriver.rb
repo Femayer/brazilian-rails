@@ -1,23 +1,13 @@
-require File.dirname(__FILE__) + '/default'
-require File.dirname(__FILE__) + '/defaultMappingRegistry'
 require 'soap/rpc/driver'
 
-class FreteSoap < ::SOAP::RPC::Driver
-  DefaultEndpointUrl = "http://comercio.locaweb.com.br/correios/frete.asmx"
+class CalcPrecoPrazoWSSoap < ::SOAP::RPC::Driver
+  DefaultEndpointUrl = "http://shopping.correios.com.br/wbm/shopping/script/CalcPrecoPrazo.asmx"
 
   Methods = [
-    [ "http://tempuri.org/Correios",
-      "correios",
-      [ ["in", "parameters", ["::SOAP::SOAPElement", "http://tempuri.org/", "Correios"]],
-        ["out", "parameters", ["::SOAP::SOAPElement", "http://tempuri.org/", "CorreiosResponse"]] ],
-      { :request_style =>  :document, :request_use =>  :literal,
-        :response_style => :document, :response_use => :literal,
-        :faults => {} }
-    ],
-    [ "http://tempuri.org/CorreiosXml",
-      "correiosXml",
-      [ ["in", "parameters", ["::SOAP::SOAPElement", "http://tempuri.org/", "CorreiosXml"]],
-        ["out", "parameters", ["::SOAP::SOAPElement", "http://tempuri.org/", "CorreiosXmlResponse"]] ],
+    [ "http://tempuri.org/CalcPrecoPrazo",
+      "calcPrecoPrazo",
+      [ ["in", "parameters", ["::SOAP::SOAPElement", "http://tempuri.org/", "CalcPrecoPrazo"]],
+        ["out", "parameters", ["::SOAP::SOAPElement", "http://tempuri.org/", "CalcPrecoPrazoResponse"]] ],
       { :request_style =>  :document, :request_use =>  :literal,
         :response_style => :document, :response_use => :literal,
         :faults => {} }
@@ -52,4 +42,5 @@ private
     end
   end
 end
+
 
