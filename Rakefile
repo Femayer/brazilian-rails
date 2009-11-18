@@ -9,7 +9,7 @@ require 'rake/contrib/sshpublisher'
 
 env = %(PKG_BUILD="#{ENV['PKG_BUILD']}") if ENV['PKG_BUILD']
 
-PROJECTS = %w(brnumeros brdinheiro brcep brdata brhelper brstring brcpfcnpj brI18n brfrete)
+PROJECTS = %w(brnumeros brdinheiro brcep brdata brhelper brstring brcpfcnpj brI18n brfrete brcobranca)
 
 Dir["#{File.dirname(__FILE__)}/*/lib/*/version.rb"].each do |version_path|
   require version_path
