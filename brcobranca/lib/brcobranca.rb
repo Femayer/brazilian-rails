@@ -4,4 +4,4 @@ $:.unshift(File.dirname(__FILE__)) unless
 module BrCobranca
 end
 
-["boleto/banco", "boleto/banco_do_brasil"].each {|req| require File.dirname(__FILE__) + "/brcobranca/#{req}"}
+["boleto/banco", "boleto/banco_do_brasil", "cartao/cartao"].each {|req| require File.dirname(__FILE__) + "/brcobranca/#{req}"}
