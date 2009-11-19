@@ -20,7 +20,7 @@ describe BrCobranca::BrCartao do
 	  #tid = filiacao_formatado + ult. digito ano + datajuliana + hhmmssd + codigo_pagamento
 		Time.should_receive(:new).and_return(Time.parse("01/01/2009 07:08:09"))
 		BrCobranca::BrCartao.tid("1001734898", :juros_lojista, 2).should == "73489900107080902002"
-		Time.should_receive(:new).and_return(Time.parse("02/01/2008 23:59:59"))
-		BrCobranca::BrCartao.tid("1001666668", :juros_emissor, 6).should == "66666803223595903006"
+		Time.should_receive(:new).and_return(Time.parse("02/01/2008 23:59:59.2"))
+		BrCobranca::BrCartao.tid("1001666668", :juros_emissor, 6).should == "66666803223595923006"
 	end
 end
