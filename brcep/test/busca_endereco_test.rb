@@ -81,6 +81,11 @@ class BuscaEnderecoTest < Test::Unit::TestCase
     end
   end
 
+	def test_when_there_is_no_address_but_there_is_the_city_on_cep_search
+		mock_get_response_from_buscar_cep_when_address_not_found_on_bronze_business('13160000')
+    assert_equal ['', '', '', 'SP', 'Artur Nogueira', '13160000'], BuscaEndereco.por_cep('13160000')
+	end
+
   def test_should_raise_exception_when_search_for_zip_with_no_associated_address
     ZIPS_WITH_NO_ADDRESS_ASSOCIATED.each do |zip_with_no_address_associated|
       assert_raise RuntimeError, "CEP #{limpa_cep(zip_with_no_address_associated)} não encontrado." do

@@ -61,11 +61,12 @@ class BuscaEndereco
     @@cep = numero.to_s.gsub(/\./, '').gsub(/\-/, '')
     raise "O CEP informado possui um formato inválido." if @@cep.length != 8
 
-    @@retorno = []
 
     begin
+	    @@retorno = []
       usar_web_service_da_bronze_business
     rescue
+	    @@retorno = []
       usar_web_service_do_buscar_cep
     end
     
@@ -91,13 +92,17 @@ class BuscaEndereco
   end
 
   def self.processar_xml(elementos_do_xml)
+		encontrado = false
     elementos_do_xml.each do |e|
       elemento = REXML::XPath.match(@@doc, "//#{e}").first
-
-      raise "CEP #{@@cep} não encontrado." if elemento.nil?
-
+			if elemento.nil?
+				@@retorno << ""
+			else
+				encontrado = true
+				@@retorno << elemento.text
+			end
       # Remove os acentos já que o Buscar Cep retorna o endereço com acento e a Bronze Business não
-      @@retorno << elemento.text
     end
+		raise "CEP #{@@cep} não encontrado."  unless encontrado
   end
 end
