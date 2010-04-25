@@ -31,7 +31,7 @@ module BrFrete
 		options[:servico] = SERVICOS[:sedex] unless options[:servico]
 	  response = Net::HTTP.get_response(URI.parse("#{URL_CORREIOS}?strRetorno=xml&nCdServico=#{options[:servico]}&nVlPeso=#{options[:peso]}&sCepOrigem=#{options[:de]}&sCepDestino=#{options[:para]}&nCdFormato=1&sCdMaoPropria=N&sCdAvisoRecebimento=N&nVlValorDeclarado=0"))
 	
-		valor = response.body.match("<Valor>(.*)</Valor>")[1].to_f
+		valor = response.body.match("<Valor>(.*)</Valor>")[1].gsub(",",".").to_f
 		erro = response.body.match("<Erro>(.*)</Erro>")[1]
 		raise ArgumentError.new("Erro: #{erro}") unless erro == "0"
 		valor
