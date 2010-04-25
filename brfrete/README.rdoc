@@ -4,10 +4,6 @@ Para cálculo de SEDEX
 
   valor = BrFrete.valor_do_sedex :de => "01222000", :para => "01254000", :peso => 1
 
-Para cálculo do E-SEDEX
-
-  valor = BrFrete.valor_do_esedex :de => "01222000", :para => "01254000", :peso => 1
-
 BrFrete
 == Note on Patches/Pull Requests
  
