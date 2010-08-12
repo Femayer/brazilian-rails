@@ -5,9 +5,7 @@ require 'rake/testtask'
 require 'rake/rdoctask'
 require 'rake/packagetask'
 require 'rake/gempackagetask'
-require 'rake/contrib/sshpublisher'
-require 'spec'
-require 'spec/rake/spectask'
+
 require File.join(File.dirname(__FILE__), 'lib', 'brcpfcnpj', 'version')
 
 PKG_BUILD     = ENV['PKG_BUILD'] ? '.' + ENV['PKG_BUILD'] : ''
@@ -20,16 +18,23 @@ RELEASE_NAME  = "REL #{PKG_VERSION}"
 RUBY_FORGE_PROJECT = "brcpfcnpj"
 RUBY_FORGE_USER    = "tapajos"
 
-desc "Default Task"
-task :default => [ :spec ]
+begin
+  require 'spec'
+  require 'spec/rake/spectask'
 
-desc "Run all specs"
-Spec::Rake::SpecTask.new do |t|
-  t.spec_files = FileList['spec/**/*_spec.rb']
-end  
+  desc "Default Task"
+  task :default => [ :spec ]
 
-task :test do
-  system("rake spec")
+  desc "Run all specs"
+  Spec::Rake::SpecTask.new do |t|
+    t.spec_files = FileList['spec/**/*_spec.rb']
+  end
+
+  task :test do
+    system("rake spec")
+  end
+rescue LoadError
+  puts "To execute tests for brcnpjcpf gem, you want to install spec gem before"
 end
 
 #Generate the RDoc documentation
@@ -58,7 +63,7 @@ spec = Gem::Specification.new do |s|
   s.homepage = "http://www.improveit.com.br/software_livre/brazilian_rails"
 
   s.add_dependency('actionpack', '>= 1.13.6')
-  s.add_dependency('active_support', '>= 1.4.2')
+  s.add_dependency('activesupport', '>= 1.4.2')
 
   s.has_rdoc = true
   s.requirements << 'none'
@@ -68,34 +73,14 @@ spec = Gem::Specification.new do |s|
   s.files = s.files + Dir.glob( "lib/**/*" ).delete_if { |item| item.include?( "\.svn" ) }
   s.files = s.files + Dir.glob( "test/**/*" ).delete_if { |item| item.include?( "\.svn" ) }
 end
-  
+
 Rake::GemPackageTask.new(spec) do |p|
   p.gem_spec = spec
-  p.need_tar = true
-  p.need_zip = true
 end
 
 
-# desc "Publish the API documentation"
-# task :pgem => [:package] do 
-#   Rake::SshFilePublisher.new("wrath.rubyonrails.org", "public_html/gems/gems", "pkg", "#{PKG_FILE_NAME}.gem").upload
-# end
-# 
-# desc "Publish the API documentation"
-# task :pdoc => [:rdoc] do 
-#   Rake::SshDirPublisher.new("wrath.rubyonrails.org", "public_html/am", "doc").upload
-# end
-# 
 
 desc "Publish the release files to RubyForge."
 task :release => [ :package ] do
-  require 'rubyforge'
-  require 'rake/contrib/rubyforgepublisher'
-  
-  packages = %w( gem tgz zip ).collect{ |ext| "pkg/#{PKG_NAME}-#{PKG_VERSION}.#{ext}" }
-  
-  rubyforge = RubyForge.new
-  rubyforge.configure
-  rubyforge.login
-  rubyforge.add_release("brazilian-rails", PKG_NAME, "REL #{PKG_VERSION}", *packages)
+  `gem push pkg/#{PKG_NAME}-#{PKG_VERSION}.gem`
 end
