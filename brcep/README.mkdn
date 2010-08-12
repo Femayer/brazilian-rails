@@ -12,7 +12,7 @@ Primeiro o endereço é procurado no web service da Bronze Business, e caso não
 ## Chave do BuscarCEP
 Desde o dia 01/08/2010 o BuscarCEP exige chave para consulta de seu webservice. Para cadastrar a sua chave, execute o seguinte comando antes de fazer as buscas:
 
-BuscaEndereco.chave_buscar_cep = "sua chave"
+        BuscaEndereco.chave_buscar_cep = "sua chave"
 
 ## Como usar?
 
