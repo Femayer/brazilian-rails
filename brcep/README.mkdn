@@ -9,6 +9,11 @@ O BrCep é um gem que tem como objetivo buscar um endereço com base no seu CEP.
 
 Primeiro o endereço é procurado no web service da Bronze Business, e caso não ache o endereço lá, ou caso este web service esteja indisponível, o endereço será então procurado no web service do Buscar CEP. Portanto, o endereço tem duas chances para ser encontrado, sendo mais difícil o serviço de busca de endereço por CEP estar indisponível ou não encontrar o endereço.
 
+## Chave do BuscarCEP
+Desde o dia 01/08/2010 o BuscarCEP exige chave para consulta de seu webservice. Para cadastrar a sua chave, execute o seguinte comando antes de fazer as buscas:
+
+BuscaEndereco.chave_buscar_cep = "sua chave"
+
 ## Como usar?
 
         BuscaEndereco.por_cep(22640100)     ==> ['Avenida', 'das Americas', 'Barra da Tijuca', 'RJ', 'Rio de Janeiro', 22640100]

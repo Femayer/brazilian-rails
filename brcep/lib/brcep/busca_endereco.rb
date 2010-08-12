@@ -26,8 +26,18 @@ require 'rexml/document'
 class BuscaEndereco
   @@proxy_addr = nil
   @@proxy_port = nil
+  @@chave_buscar_cep = ""
   
   class << self
+	
+		def chave_buscar_cep= chave
+			@@chave_buscar_cep = chave  
+		end
+		
+		def chave_buscar_cep
+			@@chave_buscar_cep
+		end
+		
     def proxy_addr
       @@proxy_addr
     end
@@ -84,7 +94,7 @@ class BuscaEndereco
   end
 
   def self.usar_web_service_do_buscar_cep
-    @@response = Net::HTTP.Proxy(self.proxy_addr, self.proxy_port).get_response(URI.parse("#{URL_WEB_SERVICE_BUSCAR_CEP}#{@@cep}&formato=xml"))
+    @@response = Net::HTTP.Proxy(self.proxy_addr, self.proxy_port).get_response(URI.parse("#{URL_WEB_SERVICE_BUSCAR_CEP}#{@@cep}&formato=xml&chave=#{self.chave_buscar_cep}"))
     raise "A busca de endereço por CEP está indisponível no momento." unless @@response.kind_of?(Net::HTTPSuccess)
     
     @@doc = REXML::Document.new(@@response.body)
