@@ -1,0 +1,76 @@
+# BrFrete
+
+## O que é?
+
+O BrFrete é um gem (que foi refatorada da versão original do [danicuki](http://github.com/danicuki/brazilian-rails) ) que tem como objetivo buscar o valor do frete (sedex ou pac) para um cep de origem e de destino. Para isso ele utiliza 2 webservices:
+
+* w21studio: http://frete.w21studio.com/
+* WebService oficial dos correios: http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx
+
+## Diferença entre os webservices
+
+O webservice dos correios é mais instável, sendo comum estar fora do ar. Mas retornar valores precisos e atualizados.
+
+O webservice do w21studio é mais estável, mas nem sempre retorna o mesmo valor que o webservice dos correios, sendo comum a diferença de 1 ou 2 reais para menos no PAC e para mais no SEDEX.
+
+## Como usar?
+
+Você pode configurar o BrFrete para utilizar um dos dois webservices disponíveis. Para isso crie o arquivo *config/initializers/brfrete_defaults.rb* e adicione:
+		
+		# correios
+		BuscaFrete.servico_padrao = :correios
+
+		# ou w21studio
+		BuscaFrete.servico_padrao = :w21studio
+
+### Exemplo de uso com o webservice oficial dos correios
+
+		# para buscar por PAC
+		BuscaFrete.valor_pac(:de => '95670000', :para => '91030080')	==> 12.30
+		
+		# para buscar por SEDEX
+		BuscaFrete.valor_sedex(:de => '95670000', :para => '91030080')	==> 12.80
+		
+### Exemplo de uso com o webservice do w21studio
+
+O w21sudio necessita de um cadastro prévio no site, o qual será gerado um código, que deve ser usado no parâmetro **:de**
+
+		# para buscar por PAC
+		BuscaFrete.valor_pac(:de => 2101, :para => '91030080')	==> 12.30
+
+		# para buscar por SEDEX
+		BuscaFrete.valor_sedex(:de => 2101, :para => '91030080')	==> 12.80
+
+### Parâmetros possíveis nos métodos
+
+* :de = Cep de origem para o webservice oficial dos correios ou o código de cadastro do w21studio. 
+* :para = Cep de destino
+* :peso = Peso do produto a ser enviado em kg, valor default é 1
+* :altura = Altura do produto a ser enviado em cm, valor default é 20
+* :comprimento = Comprimento do produto a ser enviado em cm, valor default é 20
+* :largura = Largura do produto a ser enviado em cm, valor default é 20
+
+**Atenção:** A soma da altura, comprimento e largura não pode ultrapassar 150cm.
+
+## O que acontece se o CEP informado tiver um formato inválido ou ocorrer algum erro no webservice?
+
+Neste caso será lançado um RuntimeException com a descrição do erro, é recomendado trata-lo em seu código:
+
+		begin
+			valor_frete = BuscaFrete.valor_pac(:de => '95670000', :para => '91030080')
+		rescue
+			# tratar o erro
+		end
+		
+## Deixando seu código DRY
+
+é possível adicionar o CEP de origem em seu arquivo *config/initializers/brfrete_defaults.rb*:
+
+		# para webservice dos correios
+		BuscaFrete.cep_origem_padrao = '95670000'
+		
+		# para webservice dos correios
+		BuscaFrete.cep_origem_padrao = 2101
+		
+		# e no seu código, basta chamar:
+		BuscaFrete.valor_sedex(:para => '91030080')	==> 12.80
