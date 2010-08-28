@@ -2,7 +2,7 @@
 
 ## O que é?
 
-O BrFrete é um gem (que foi refatorada da versão original do [danicuki](http://github.com/danicuki/brazilian-rails) ) que tem como objetivo buscar o valor do frete (sedex ou pac) para um cep de origem e de destino. Para isso ele utiliza 2 webservices:
+O BrFrete é um gem (refatorado da versão original do [danicuki](http://github.com/danicuki/brazilian-rails)) que tem como objetivo buscar o valor do frete (sedex ou pac) para um cep de origem e de destino. Para isso ele utiliza 2 webservices:
 
 * w21studio: http://frete.w21studio.com/
 * WebService oficial dos correios: http://ws.correios.com.br/calculador/CalcPrecoPrazo.aspx
