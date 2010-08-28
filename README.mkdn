@@ -1,3 +1,5 @@
+este **fork** adiciona o módulo BrFrete, que calcula o valor do frete por pac ou sedex, para saber como usar leia o [README](http://github.com/maxguzenski/brazilian-rails/tree/master/brfrete/).
+
 # Brazilian Rails
 
 ## O que foi?
