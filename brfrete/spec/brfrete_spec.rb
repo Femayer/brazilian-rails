@@ -17,6 +17,7 @@ describe "BrFrete" do
 	end
 	
 	it "deve calcular o frete usando o serviço do w21studio" do
+		BuscaFrete.servico_padrao = :w21studio
 	  valor = BrFrete.valor_do_frete :de => "2702", :para => "04543000", :peso => 1
 		valor.should > 0
 		valor.should < 30
